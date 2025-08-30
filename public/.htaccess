@@ -1,0 +1,25 @@
+# 开启 Rewrite 引擎
+RewriteEngine On
+
+# 强制使用 HTTPS（可选）
+#RewriteCond %{HTTPS} off
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 将 /api/example.com 重写为 api.php?domain=example.com
+RewriteRule ^api/([a-zA-Z0-9.-]+)$ api.php?domain=$1 [QSA,L]
+
+# 启用 CORS 支持（允许跨域请求）
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type"
+</IfModule>
+
+# 防止访问隐藏文件（如 .env）
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# 自定义 404 页面（可选）
+#ErrorDocument 404 /404.html
